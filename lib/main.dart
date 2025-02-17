@@ -29,6 +29,7 @@ class _CounterWidgetState extends State<CounterWidget> {
   //initial counter value
   int _counter = 0;
   int _incrementValue = 1;
+  final int _maxCounter = 100;
 
   final TextEditingController _controller = TextEditingController();
 
@@ -36,6 +37,26 @@ class _CounterWidgetState extends State<CounterWidget> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void _showMaxLimitMessage() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Noticed'),
+          content: Text('Maximum limit reached!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -59,7 +80,7 @@ class _CounterWidgetState extends State<CounterWidget> {
           ),
           Slider(
             min: 0,
-            max: 100,
+            max: _maxCounter.toDouble(),
             value: _counter.toDouble(),
             onChanged: (double value) {
               setState(() {
@@ -111,7 +132,11 @@ class _CounterWidgetState extends State<CounterWidget> {
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    _counter += _incrementValue;
+                    if (_counter + _incrementValue > _maxCounter) {
+                      _showMaxLimitMessage();
+                    } else {
+                      _counter += _incrementValue;
+                    }
                   });
                 },
                 child: Text('Increment'),
