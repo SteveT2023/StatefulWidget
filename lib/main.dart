@@ -29,7 +29,7 @@ class _CounterWidgetState extends State<CounterWidget> {
   //initial counter value
   int _counter = 0;
   int _incrementValue = 1;
-  final int _maxCounter = 100;
+  final int _maxCounter = 1000;
 
   final TextEditingController _controller = TextEditingController();
 
@@ -59,6 +59,16 @@ class _CounterWidgetState extends State<CounterWidget> {
     );
   }
 
+  Color _getCounterColor() {
+    if (_counter == 0) {
+      return Colors.red;
+    } else if (_counter > 50) {
+      return Colors.green;
+    } else {
+      return Colors.blue;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,11 +80,11 @@ class _CounterWidgetState extends State<CounterWidget> {
         children: [
           Center(
             child: Container(
-              color: Colors.blue,
+              color: _getCounterColor(),
               child: Text(
                 //displays the current number
                 '$_counter',
-                style: TextStyle(fontSize: 50.0),
+                style: TextStyle(fontSize: 50.0, color: Colors.white),
               ),
             ),
           ),
