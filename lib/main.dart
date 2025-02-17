@@ -28,6 +28,15 @@ class CounterWidget extends StatefulWidget {
 class _CounterWidgetState extends State<CounterWidget> {
   //initial counter value
   int _counter = 0;
+  int _incrementValue = 1;
+
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +69,22 @@ class _CounterWidgetState extends State<CounterWidget> {
             activeColor: Colors.blue,
             inactiveColor: Colors.red,
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _controller,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Increment Value',
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _incrementValue = int.tryParse(value) ?? 1;
+                });
+              },
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -81,6 +106,15 @@ class _CounterWidgetState extends State<CounterWidget> {
                   });
                 },
                 child: Text('Reset'),
+              ),
+              SizedBox(width: 20),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _counter += _incrementValue;
+                  });
+                },
+                child: Text('Increment'),
               ),
             ],
           ),
